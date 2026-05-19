@@ -9,28 +9,41 @@ import org.slf4j.LoggerFactory;
 
 public class Conexion {
 
-	private static final Logger log = LoggerFactory.getLogger(Conexion.class);
+    private static final Logger log = LoggerFactory.getLogger(Conexion.class);
 
-	private static final String URL = "jdbc:postgresql://localhost:5432/tallerjdbc";
-	private static final String USUARIO = "postgres";
-	private static final String CLAVE = "c0tton14";
+    private static final String URL = "jdbc:postgresql://localhost:5432/tallerjdbc";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "c0tton14";
 
-	public static Connection obtenerConexion() {
-		Connection conexion = null;
+    public static Connection obtenerConexion() {
+        try {
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
 
-		try {
-			conexion = DriverManager.getConnection(URL, USUARIO, CLAVE);
-			log.info("Conexión realizada correctamente");
-			System.out.println("Conexión exitosa a PostgreSQL");
-		} catch (SQLException e) {
-			log.error("Error de conexión a PostgreSQL", e);
-			System.out.println("Error al conectar con PostgreSQL");
-		}
+            log.info("Conexion realizada exitosamente");
+            return con;
 
-		return conexion;
-	}
+        } catch (SQLException e) {
+            log.error("Error estableciendo conexion " + e.getMessage());
 
-	public static void main(String[] args) {
-		obtenerConexion();
-	}
+            throw new RuntimeException("No se pudo establecer conexion");
+        }
+    }
+
+    public static void main(String[] args) {
+        Connection con = null;
+
+        try {
+            con = obtenerConexion();
+            System.out.println("Conexion exitosa a PostgreSQL");
+
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    log.error("Error cerrando conexion " + e.getMessage());
+                }
+            }
+        }
+    }
 }
