@@ -20,8 +20,8 @@ public class InsertVehiculo {
         try {
             con = Conexion.obtenerConexion();
 
-            String sql = "INSERT INTO vehiculos (placa, marca, modelo, anio, precio, color, disponible) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO vehiculos (placa, marca, modelo, anio, precio, color, disponible, kilometraje) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
 
             ps = con.prepareStatement(sql);
             ps.setString(1, vehiculo.getPlaca());
@@ -31,14 +31,13 @@ public class InsertVehiculo {
             ps.setDouble(5, vehiculo.getPrecio());
             ps.setString(6, vehiculo.getColor());
             ps.setBoolean(7, vehiculo.isDisponible());
+            ps.setInt(8, vehiculo.getKilometraje());
 
             ps.executeUpdate();
 
-            System.out.println("Vehículo insertado.");
             log.info("Vehículo insertado correctamente");
 
         } catch (SQLException e) {
-            System.out.println("Error al insertar vehículo");
             log.error("Error al insertar vehículo", e);
         } finally {
             try {
@@ -55,7 +54,7 @@ public class InsertVehiculo {
     }
 
     public static void main(String[] args) {
-        Vehiculo vehiculo = new Vehiculo("JUA6676", "Toyota", "Corolla", 2020, 18500.50, "Blanco", true);
+        Vehiculo vehiculo = new Vehiculo("987OJHY", "Toyota", "Corolla", 2020, 18500.50, "Blanco", true, 1200);
         insertar(vehiculo);
     }
 }

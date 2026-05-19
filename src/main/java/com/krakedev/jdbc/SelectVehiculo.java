@@ -20,26 +20,26 @@ public class SelectVehiculo {
 		try {
 			con = Conexion.obtenerConexion();
 
-			String sql = "SELECT placa, marca, modelo, anio, precio, color, disponible FROM vehiculos";
+			String sql = "SELECT placa, marca, modelo, anio, precio, color, disponible, kilometraje FROM vehiculos";
 
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("Placa: " + rs.getString("placa"));
-				System.out.println("Marca: " + rs.getString("marca"));
-				System.out.println("Modelo: " + rs.getString("modelo"));
-				System.out.println("Año: " + rs.getInt("anio"));
-				System.out.println("Precio: " + rs.getDouble("precio"));
-				System.out.println("Color: " + rs.getString("color"));
-				System.out.println("Disponible: " + rs.getBoolean("disponible"));
-				System.out.println("-----------------------------");
+				log.info("Placa: " + rs.getString("placa"));
+				log.info("Marca: " + rs.getString("marca"));
+				log.info("Modelo: " + rs.getString("modelo"));
+				log.info("Año: " + rs.getInt("anio"));
+				log.info("Precio: " + rs.getDouble("precio"));
+				log.info("Color: " + rs.getString("color"));
+				log.info("Disponible: " + rs.getBoolean("disponible"));
+				log.info("Kilometraje: " + rs.getInt("kilometraje"));
+				log.info("-----------------------------");
 			}
 
 			log.info("Vehículos listados correctamente");
 
 		} catch (SQLException e) {
-			System.out.println("Error al listar vehículos");
 			log.error("Error al listar vehículos", e);
 		} finally {
 			try {

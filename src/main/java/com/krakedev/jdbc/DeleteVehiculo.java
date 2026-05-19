@@ -23,13 +23,11 @@ public class DeleteVehiculo {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, placa);
 
-			int filas = ps.executeUpdate();
+			ps.executeUpdate();
 
-			System.out.println("Vehículo eliminado. Filas afectadas: " + filas);
 			log.info("Vehículo eliminado correctamente");
 
 		} catch (SQLException e) {
-			System.out.println("Error al eliminar vehículo");
 			log.error("Error al eliminar vehículo", e);
 		} finally {
 			try {

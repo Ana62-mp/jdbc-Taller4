@@ -7,26 +7,34 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.krakedev.entidades.Vehiculo;
+
 public class UpdateVehiculo {
 
     private static final Logger log = LoggerFactory.getLogger(UpdateVehiculo.class);
 
-    public static void actualizarPrecio(String placa, double nuevoPrecio) {
+    public static void actualizar(Vehiculo vehiculo) {
         Connection con = null;
         PreparedStatement ps = null;
 
         try {
             con = Conexion.obtenerConexion();
 
-            String sql = "UPDATE vehiculos SET precio = ? WHERE placa = ?";
+            String sql = "UPDATE vehiculos SET marca = ?, modelo = ?, anio = ?, precio = ?, color = ?, disponible = ? "
+                    + "WHERE placa = ?";
 
             ps = con.prepareStatement(sql);
-            ps.setDouble(1, nuevoPrecio);
-            ps.setString(2, placa);
+
+            ps.setString(1, vehiculo.getMarca());
+            ps.setString(2, vehiculo.getModelo());
+            ps.setInt(3, vehiculo.getAnio());
+            ps.setDouble(4, vehiculo.getPrecio());
+            ps.setString(5, vehiculo.getColor());
+            ps.setBoolean(6, vehiculo.isDisponible());
+            ps.setString(7, vehiculo.getPlaca());
 
             ps.executeUpdate();
 
-            System.out.println("Vehículo actualizado.");
             log.info("Vehículo actualizado correctamente");
 
         } catch (SQLException e) {
@@ -47,6 +55,8 @@ public class UpdateVehiculo {
     }
 
     public static void main(String[] args) {
-        actualizarPrecio("ABC1234", 199.99);
+        Vehiculo vehiculo = new Vehiculo("ABC1234","Toyota","Corolla",2022,21500.75,"Negro",true,1200);
+
+        actualizar(vehiculo);
     }
 }
